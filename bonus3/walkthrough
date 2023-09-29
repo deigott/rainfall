@@ -1,0 +1,24 @@
+Once we are logged as bonus3
+
+We are presented with a suid binary.
+
+After analysing the executable we find that the program calls fopen to open the file in /home/user/end/.pass
+
+Then it's preparing two buffer to copy it's content in them. Also it reads the argument with atoi to put '\0' at that position.
+Then strcmp buffer and the argv[1] together and runs a shell if they are equall.
+
+If we input an empty string as first argument, it will replace the first character in the buffer with a \0.
+Then strcmp will return 0.
+
+bonus3@RainFall:~$ ./bonus3 ""
+$ whoami
+end
+$ cd /home/user/end
+$ ls
+end
+$ cat end
+Congratulations graduate!
+$ cat .pass
+3321b6f81659f9a71c76616f606e4b50189cecfea611393d5d649f75e157353c
+$
+And Here's the flag for end
