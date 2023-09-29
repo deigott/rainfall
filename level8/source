@@ -1,0 +1,32 @@
+
+int main(void)
+{
+	struct buffer buf;
+
+	while (true) {
+		printf("%p, %p \n", auth, service);
+		if (fgets(buf.cmd, 128, stdin) == NULL) {
+			return 0;
+		}
+		if (strncmp(buf.cmd, "auth ", 5) == 0) {
+			auth = malloc(4);
+			auth[0] = 0;
+			if (strlen(buf.auth) < 32) {
+				strcpy(auth, buf.auth);
+			}
+		}
+		if (strncmp(buf.cmd, "reset", 5) == 0) {
+			free(auth);
+		}
+		if (strncmp(buf.cmd, "service", 6) == 0) {
+			service = strdup(buf.service);
+		}
+		if (strncmp(buf.cmd, "login", 5) == 0) {
+			if (auth[32] == 0) {
+				fwrite("Password:\n", 1, 10, stdout);
+			} else {
+				system("/bin/sh");
+			}
+		}
+	}
+}
