@@ -1,0 +1,16 @@
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+
+int run() {
+    fwrite("Good... Wait what?\n", 0x1, 0x13, 1);
+    system("/bin/sh");
+    return 1;
+}
+
+int main() {
+    char var_40[64];
+
+    gets(&var_40);
+    return 0;
+}
