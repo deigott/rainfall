@@ -1,0 +1,20 @@
+void n(void)
+{
+  system("/bin/cat /home/user/level7/.pass");
+  return;
+}
+
+void main(int param_1,char **param_2)
+{
+  char *dest;
+  code **var1;
+
+  dest = (char *)malloc(0x40);
+  var1 = (code **)malloc(4);
+  *var1 = m;
+  strcpy(dest,param_2[1]);
+  (**var1)();
+  return;
+}
+
+
