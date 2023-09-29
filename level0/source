@@ -1,0 +1,24 @@
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+
+int     main(int argc, char **argv)
+{
+    char *buffer;
+    int id;
+    int uid;
+
+    if (atoi(argv[1]) != 423) {
+        write(1, "No !\n", 5);
+        return (0);
+    }
+
+    buffer = strdup("/bin/sh");
+    gid = getegid();
+    euid = geteuid();
+
+    setresgid(gid, gid, gid);
+    setresuid(euid, euid, euid);
+    execv(buffer, NULL);
+    return (0);
+}
