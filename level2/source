@@ -1,0 +1,20 @@
+int p(void * ) {
+    char var_4C[74]
+    fflush(1);
+    eax = gets(&var_4C);
+    var_C = ret_addr;
+    if ((var_C & 0xb0000000) == 0xb0000000) {
+            printf("(%p)\n", var_C);
+            eax = _exit(0x1);
+    }
+    else {
+            puts(&var_4C);
+            eax = strdup(&var_4C);
+    }
+    return eax;
+}
+
+int  main() {
+    p();
+    return (0);
+}
